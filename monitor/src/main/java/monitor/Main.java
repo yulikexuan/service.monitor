@@ -15,15 +15,44 @@ public class Main {
 
     public static void main(String[] args) {
 
-        List<String> factoryNames =
+        List<ServiceObserverFactory> factories =
                 ServiceLoader.load(ServiceObserverFactory.class)
                         .stream()
                         .map(Provider::get)
-                        .map(ServiceObserverFactory::factoryName)
-                        .collect(toList());
+                        .toList();
 
-        System.out.println(">>> ServiceObserverFactory Names: %s"
-                .formatted(factoryNames));
+        new DataCollector().collect(factories).forEach(System.out::println);
     }
 
+}
+
+class DataCollector {
+
+    static final List<String> SITE_NAMES = List.of(
+        "0-patient",
+        "alpha-1",
+        "alpha-2",
+        "beta-1",
+        "alpha-3",
+        "beta-2");
+
+    List<DiagnosticDataPoint> collect(
+            final List<ServiceObserverFactory> observerFactories) {
+
+        return SITE_NAMES.stream()
+            .map(n -> this.createObserver(observerFactories, n))
+            .flatMap(Optional::stream)
+            .map(ServiceObserver::dataFromService)
+            .toList();
+    }
+
+    private Optional<ServiceObserver> createObserver(
+			final List<ServiceObserverFactory> observerFactories,
+            final String serviceName) {
+
+		return observerFactories.stream()
+				.flatMap(factory -> factory.create(serviceName).stream())
+				.findFirst();
+	}
+    
 }

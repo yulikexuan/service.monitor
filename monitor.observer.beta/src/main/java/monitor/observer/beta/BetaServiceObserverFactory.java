@@ -1,4 +1,4 @@
-package monitor.observer.alpha;
+package monitor.observer.beta;
 
 
 import monitor.observer.*;
@@ -6,16 +6,16 @@ import monitor.observer.*;
 import java.util.Optional;
 
 
-public final class AlphaServiceObserverFactory implements ServiceObserverFactory {
+public final class BetaServiceObserverFactory implements ServiceObserverFactory {
 
 	@Override
 	public String factoryName() {
-		return "alpha";
+		return "beta";
 	}
 
 	@Override
 	public Optional<ServiceObserver> create(String service) {
-		return AlphaServiceObserver.of(service);
+		return BetaServiceObserver.of(service);
 	}
 
 }

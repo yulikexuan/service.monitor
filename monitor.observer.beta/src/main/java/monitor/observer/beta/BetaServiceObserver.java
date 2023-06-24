@@ -1,4 +1,4 @@
-package monitor.observer.alpha;
+package monitor.observer.beta;
 
 
 import monitor.observer.*;
@@ -8,13 +8,13 @@ import java.time.ZonedDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-final class AlphaServiceObserver implements ServiceObserver {
+final class BetaServiceObserver implements ServiceObserver {
 
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     private final String serviceName;
 
-    AlphaServiceObserver(String serviceName) {
+    BetaServiceObserver(String serviceName) {
 		this.serviceName = serviceName;
 	}
 
@@ -33,8 +33,8 @@ final class AlphaServiceObserver implements ServiceObserver {
     static Optional<ServiceObserver> of(String service) {
 		return Optional.of(service)
 				// this check should do something more sensible
-				.filter(s -> s.contains("alpha"))
-				.map(AlphaServiceObserver::new);
+				.filter(s -> s.contains("beta"))
+				.map(BetaServiceObserver::new);
 	}
 
 }
