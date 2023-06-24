@@ -3,17 +3,45 @@ package monitor;
 
 import monitor.observer.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.ServiceLoader.Provider;
+import java.net.*;
+import java.nio.file.*;
+
 
 import static java.util.stream.Collectors.toList;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        Path serviceProviderPath = Paths.get("services");
+
+        System.out.println(">>> Service Provider Path Exist? %b"
+                .formatted(Files.exists(serviceProviderPath)));
+
+        Collection<URL> urlList = new ArrayList<>();
+        try (DirectoryStream<Path> jars = Files.newDirectoryStream(
+                serviceProviderPath, "*.jar")) {
+
+            for (Path jar : jars) {
+                urlList.add(jar.toUri().toURL());
+                System.out.println(">>> Adding jar %s".formatted(
+                        jar.toUri().toURL().toString()));
+            }
+        }
+        URL[] urls = urlList.toArray(new URL[urlList.size()]);
+
+        // URL serviceProviderURL = serviceProviderPath.toUri().toURL();
+        // URL[] urls = { serviceProviderURL };
+        // System.out.println(serviceProviderURL);
+
+        ClassLoader parentClassLoader = ClassLoader.getSystemClassLoader();
+        ServiceClassLoader serviceClassLoader = new ServiceClassLoader(
+                urls, parentClassLoader);
+
+        Thread.currentThread().setContextClassLoader(serviceClassLoader);
 
         List<ServiceObserverFactory> factories =
                 ServiceLoader.load(ServiceObserverFactory.class)
@@ -54,5 +82,5 @@ class DataCollector {
 				.flatMap(factory -> factory.create(serviceName).stream())
 				.findFirst();
 	}
-    
+
 }

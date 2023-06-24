@@ -19,9 +19,9 @@ cp -rf monitor.observer.beta/src/main/resources/META-INF classes/monitor.observe
 cp -rf monitor.observer.zero/src/main/resources/META-INF classes/monitor.observer.zero
 echo
 echo Building Services ...
-jar -cvf mods/monitor.observer.alpha.jar -C classes/monitor.observer.alpha .
-jar -cvf mods/monitor.observer.beta.jar -C classes/monitor.observer.beta .
-jar -cvf mods/monitor.observer.zero.jar -C classes/monitor.observer.zero .
+jar -cvf services/monitor.observer.alpha.jar -C classes/monitor.observer.alpha .
+jar -cvf services/monitor.observer.beta.jar -C classes/monitor.observer.beta .
+jar -cvf services/monitor.observer.zero.jar -C classes/monitor.observer.zero .
 echo
 echo Done
 ls -al mods
