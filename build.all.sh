@@ -14,6 +14,8 @@ echo Compiling Services ...
 javac -p mods -d classes/monitor.observer.alpha monitor.observer.alpha/src/main/java/monitor/observer/alpha/*.java monitor.observer.alpha/src/main/java/module-info.java
 javac -p mods -d classes/monitor.observer.beta monitor.observer.beta/src/main/java/monitor/observer/beta/*.java monitor.observer.beta/src/main/java/module-info.java
 javac --class-path 'mods/*' -d classes/monitor.observer.zero monitor.observer.zero/src/main/java/monitor/observer/zero/*.java
+cp -rf monitor.observer.alpha/src/main/resources/META-INF classes/monitor.observer.alpha
+cp -rf monitor.observer.beta/src/main/resources/META-INF classes/monitor.observer.beta
 cp -rf monitor.observer.zero/src/main/resources/META-INF classes/monitor.observer.zero
 echo
 echo Building Services ...
@@ -24,5 +26,8 @@ echo
 echo Done
 ls -al mods
 echo
-echo Running monitor module ...
-java -p mods -m monitor 
+echo Running monitor as a modular jar ...
+java -p mods -m monitor
+echo
+echo Running monitor as a plain jar ...
+java -cp 'mods/*' monitor.Main
