@@ -6,6 +6,7 @@ import monitor.observer.*;
 import java.util.Optional;
 
 
+@Beta
 public final class BetaServiceObserverFactory implements ServiceObserverFactory {
 
 	@Override

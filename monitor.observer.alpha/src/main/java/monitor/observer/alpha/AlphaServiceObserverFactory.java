@@ -6,6 +6,7 @@ import monitor.observer.*;
 import java.util.Optional;
 
 
+@Alpha
 public final class AlphaServiceObserverFactory implements ServiceObserverFactory {
 
 	@Override
