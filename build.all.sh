@@ -1,12 +1,17 @@
 echo Cleaning ...
 cd /c/dev/projects/jigsaw/service.monitor
-rm -rf classes/monitor*
-rm -rf mods/**/*
+rm -rf classes
+rm -rf mods
+rm -rf services
+mkdir classes
+mkdir mods
+mkdir services
 echo
 echo Compiling monitor module ...
 javac -p mods --module-source-path "./*/src/main/java" -d classes -m monitor
 echo
 echo Building monitor module ...
+jar -cvf mods/monitor.service.loader.jar -C classes/monitor.service.loader .
 jar -cvf mods/monitor.observer.jar -C classes/monitor.observer .
 jar -v --create --file mods/monitor.jar --main-class monitor.Main -C classes/monitor .
 echo
