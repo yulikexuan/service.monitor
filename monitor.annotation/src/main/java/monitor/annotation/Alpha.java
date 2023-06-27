@@ -1,4 +1,4 @@
-package monitor.observer;
+package monitor.annotation;
 
 import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.TYPE;

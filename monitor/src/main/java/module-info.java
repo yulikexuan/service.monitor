@@ -1,7 +1,7 @@
 import monitor.observer.ServiceObserverFactory;
 
 module monitor {
+    requires monitor.core;
     requires monitor.service.loader;
-    requires monitor.observer;
     uses ServiceObserverFactory;
 }
