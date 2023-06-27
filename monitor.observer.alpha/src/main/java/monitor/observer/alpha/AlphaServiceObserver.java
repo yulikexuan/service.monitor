@@ -8,13 +8,13 @@ import java.time.ZonedDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-final class AlphaServiceObserver implements ServiceObserver {
+public class AlphaServiceObserver implements ServiceObserver {
 
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     private final String serviceName;
 
-    AlphaServiceObserver(String serviceName) {
+    public AlphaServiceObserver(String serviceName) {
 		this.serviceName = serviceName;
 	}
 
@@ -30,7 +30,7 @@ final class AlphaServiceObserver implements ServiceObserver {
 		return new DiagnosticDataPoint(serviceName, ZonedDateTime.now(), alive);
 	}
 
-    static Optional<ServiceObserver> of(String service) {
+    public static Optional<ServiceObserver> of(String service) {
 		return Optional.of(service)
 				// this check should do something more sensible
 				.filter(s -> s.contains("alpha"))

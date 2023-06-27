@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 @Alpha
-public final class AlphaServiceObserverFactory implements ServiceObserverFactory {
+public class AlphaServiceObserverFactory implements ServiceObserverFactory {
 
 	@Override
 	public String factoryName() {
