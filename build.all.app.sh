@@ -9,7 +9,7 @@ javac -p mods -d classes/monitor.service.loader monitor.service.loader/src/main/
 jar -cvf mods/monitor.service.loader.jar -C classes/monitor.service.loader .
 echo
 echo Building monitor.observer module
-javac -p mods -d classes/monitor.observer monitor.observer/src/main/java/monitor/observer/*.java monitor.observer/src/main/java/module-info.java
+javac -p "mods;lib" -d classes/monitor.observer monitor.observer/src/main/java/monitor/observer/*.java monitor.observer/src/main/java/module-info.java
 jar -cvf mods/monitor.observer.jar -C classes/monitor.observer .
 echo
 echo Building monitor.core module
