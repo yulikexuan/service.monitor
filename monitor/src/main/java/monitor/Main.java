@@ -1,11 +1,13 @@
 package monitor;
 
 
+import java.time.*;
 import java.util.*;
 import java.util.ServiceLoader.Provider;
 import java.net.*;
 import java.nio.file.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 
 import monitor.observer.*;
 import monitor.annotation.*;
@@ -23,6 +25,12 @@ public class Main {
     static final String SERVICE_PATH = "services";
 
     public static void main(String[] args) throws Exception {
+
+        // Start to Test Class Reflection
+        final var typeName = "monitor.observer.DiagnosticDataPoint";
+        boolean cons = constructable(Class.forName(typeName));
+        System.out.println(">>> Able to condtruct %s? %b".formatted(typeName, cons));
+        // End of Testing Class Reflection
 
         final String serviceName =  (args.length > 0) ? args[0] : "all";
 
@@ -47,6 +55,14 @@ public class Main {
                         SERVICE_ANNOTATIONSS.get(serviceName));
     }
 
+    static boolean constructable(Class<?> type) throws Exception {
+        Constructor<?> constructor = type.getConstructor(
+                String.class, ZonedDateTime.class, Boolean.TYPE);
+        boolean accessable = constructor.trySetAccessible();
+        System.out.println(">>> Is type %s accessible? %b "
+                .formatted(type.getSimpleName(), accessable));
+        return accessable;
+    }
 }
 
 class DataCollector {
