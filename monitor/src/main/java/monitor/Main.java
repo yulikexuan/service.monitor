@@ -1,11 +1,15 @@
 package monitor;
 
 
+import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.ServiceLoader.Provider;
 import java.net.*;
 import java.nio.file.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.module.*;
 
 import monitor.observer.*;
 import monitor.annotation.*;
@@ -24,12 +28,28 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        // Start to Test Class Reflection
+        final var typeName = "monitor.observer.DiagnosticDataPoint";
+        boolean cons = constructable(Class.forName(typeName));
+        System.out.println(">>> Able to condtruct %s? %b".formatted(typeName, cons));
+        // End of Testing Class Reflection
+
+        List<Module> modules = List.of(
+                Main.class.getModule(), ServiceLoaderConfig.class.getModule());
+
+        describeModules(modules);
+        describeModuleLayers(modules);
+
         final String serviceName =  (args.length > 0) ? args[0] : "all";
 
-        ServiceLoaderConfig.config(SERVICE_PATH, ClassLoader.getSystemClassLoader());
+        // ServiceLoaderConfig.config(SERVICE_PATH, ClassLoader.getSystemClassLoader());
+        // ServiceLoaderConfig.configServiceLayer();
+        System.out.println(">>> Adding Service Layer ... \n");
+        ModuleLayer serviceLayer = ServiceLoaderConfig.createLayer(SERVICE_PATH);
 
+        System.out.println(">>> Loading Service Factories ... \n");
         List<ServiceObserverFactory> factories =
-                ServiceLoader.load(ServiceObserverFactory.class)
+                ServiceLoader.load(serviceLayer, ServiceObserverFactory.class)
                         .stream()
                         .filter(provider -> filterService(serviceName, provider))
                         .map(Provider::get)
@@ -45,6 +65,42 @@ public class Main {
         return serviceName.equals("all") ? true :
                 provider.type().isAnnotationPresent(
                         SERVICE_ANNOTATIONSS.get(serviceName));
+    }
+
+    static boolean constructable(Class<?> type) throws Exception {
+        Constructor<?> constructor = type.getConstructor(
+                String.class, ZonedDateTime.class, Boolean.TYPE);
+        boolean accessable = constructor.trySetAccessible();
+        System.out.println(">>> Is type %s accessible? %b "
+                .formatted(type.getSimpleName(), accessable));
+        return accessable;
+    }
+
+    static void describeModules(final List<Module> modules) {
+
+        modules.stream()
+                .map(Module::getDescriptor)
+                .forEach(Main::printModuleDescriptor);
+
+        System.out.println();
+    }
+
+    static void describeModuleLayers(final List<Module> modules) {
+        long layerNum = modules.stream()
+                .map(Module::getLayer)
+                .distinct()
+                .count();
+        System.out.println("%n>>> How many module layers? %d%n".formatted(layerNum));
+    }
+
+    static void printModuleDescriptor(final ModuleDescriptor desc) {
+        System.out.println("%n%s module %s @ ".formatted(
+                desc.modifiers(), desc.name(), desc.rawVersion().toString()));
+        System.out.println("\t requires: %s".formatted(desc.requires()));
+        System.out.println("\t exports: %s".formatted(desc.exports()));
+        System.out.println("\t opens: %s".formatted(desc.opens()));
+        System.out.println("\t contains packages: %s".formatted(desc.packages()));
+        System.out.println("\t main class: %s".formatted(desc.mainClass()));
     }
 
 }

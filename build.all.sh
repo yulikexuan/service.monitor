@@ -28,3 +28,7 @@ java -p mods -m monitor alpha
 echo
 echo --- Running monitor as a modular jar with beta services ---
 java -p mods -m monitor beta
+echo
+echo --- Running monitor as a modular jar with all services ---
+java -p mods -m monitor all
+echo
