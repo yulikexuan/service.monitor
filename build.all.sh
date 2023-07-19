@@ -8,9 +8,9 @@ javac --class-path 'mods/*' -d classes/monitor.observer.zero monitor.observer.ze
 cp -rf monitor.observer.alpha/src/main/resources/META-INF classes/monitor.observer.alpha
 cp -rf monitor.observer.beta/src/main/resources/META-INF classes/monitor.observer.beta
 cp -rf monitor.observer.zero/src/main/resources/META-INF classes/monitor.observer.zero
-jar -cvf services/monitor.observer.alpha.jar -C classes/monitor.observer.alpha .
-jar -cvf services/monitor.observer.beta.jar -C classes/monitor.observer.beta .
-jar -cvf services/monitor.observer.zero.jar -C classes/monitor.observer.zero .
+jar -v --create --file services/monitor.observer.alpha.jar --module-version 1.0.0 -C classes/monitor.observer.alpha .
+jar -v --create --file services/monitor.observer.beta.jar --module-version 1.0.0 -C classes/monitor.observer.beta .
+jar -v --create --file services/monitor.observer.zero.jar --module-version 1.0.0 -C classes/monitor.observer.zero .
 echo
 echo ------- All Done -------
 echo

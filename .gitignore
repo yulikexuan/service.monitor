@@ -4,3 +4,4 @@ services/**/*
 ./**/*.jar
 /lib
 /lib/**/*.jar
+jdk-monitor

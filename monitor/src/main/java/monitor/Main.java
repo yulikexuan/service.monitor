@@ -40,6 +40,9 @@ public class Main {
         describeModules(modules);
         describeModuleLayers(modules);
 
+        System.out.println(">>> Describe Requires of Module monitor ... \n");
+        describeRequires(Main.class.getModule());
+
         final String serviceName =  (args.length > 0) ? args[0] : "all";
 
         // ServiceLoaderConfig.config(SERVICE_PATH, ClassLoader.getSystemClassLoader());
@@ -85,6 +88,17 @@ public class Main {
         System.out.println();
     }
 
+    static void describeRequires(final Module module) {
+
+        module.getDescriptor().requires().stream()
+                .map(r -> "    -> %s @ %s".formatted(
+                        r.name(),
+                        r.rawCompiledVersion().orElse("unknown version")))
+                .forEach(System.out::println);
+
+        System.out.println();
+    }
+
     static void describeModuleLayers(final List<Module> modules) {
         long layerNum = modules.stream()
                 .map(Module::getLayer)
@@ -94,8 +108,9 @@ public class Main {
     }
 
     static void printModuleDescriptor(final ModuleDescriptor desc) {
-        System.out.println("%n%s module %s @ ".formatted(
-                desc.modifiers(), desc.name(), desc.rawVersion().toString()));
+        String version = desc.rawVersion().orElse("unknown version");
+        System.out.println("%n%s module %s @ %s".formatted(
+                desc.modifiers(), desc.name(), version));
         System.out.println("\t requires: %s".formatted(desc.requires()));
         System.out.println("\t exports: %s".formatted(desc.exports()));
         System.out.println("\t opens: %s".formatted(desc.opens()));

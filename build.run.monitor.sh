@@ -8,7 +8,7 @@ javac -p mods -d classes/monitor monitor/src/main/java/monitor/*.java monitor/sr
 echo
 echo Building ...
 echo
-jar -v --create --file mods/monitor.jar --main-class monitor.Main -C classes/monitor .
+jar -v --create --file mods/monitor.jar --module-version 1.0.0 --main-class monitor.Main -C classes/monitor .
 echo
 echo Running ...
 echo

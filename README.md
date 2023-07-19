@@ -52,3 +52,16 @@ $ java --module-path mods --limit-modules monitor --module monitor
 $ java --module-path mods --limit-modules monitor --add-modules monitor.observer.alpha --module monitor
 $ java --module-path mods --limit-modules monitor --add-modules monitor.observer.beta --module monitor
 ```
+
+### Module Versions
+
+#### Record version info
+```
+$ jar -v --create --file mods/monitor.jar --module-version 1.0 --main-class monitor.Main -C classes/monitor .
+```
+
+#### Check module's version
+
+```
+$ jar --describe-module --file mods/monitor.jar
+```
